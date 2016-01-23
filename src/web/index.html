@@ -86,11 +86,11 @@
         function startWidget() {
             var params = parseParams();
             var layer = params.layer || 'maasto';
-            var crsCode = "3067";
-            var crs = L.CRS.EPSG3067;
-            var minZoom = 0;
-            var maxZoom = 13;
-            var maxNativeZoom = 11;
+            var crsCode = params.crs || "3067";
+            var crs = params.crs === "3857" ? L.CRS.EPSG3857 : L.CRS.EPSG3067;
+            var minZoom = params.crs === "3857" ? 5 : 0;
+            var maxZoom = params.crs === "3857" ? 17 : 13;
+            var maxNativeZoom = params.crs === "3857" ? 15 : 11;
             var url = "/tms/1.0.0/" + layer + "/EPSG_" + crsCode + "/{z}/{x}/{y}.png";
 
             var map = createMap(crs, url, minZoom, maxZoom, maxNativeZoom);

@@ -27,7 +27,7 @@ MAP
       "wms_title" "MML Maastokartta"
       "wms_accessconstraints" "none"
       "wms_onlineresource" "http://192.168.99.100/index.html"
-      "wms_srs" "EPSG:3067"
+      "wms_srs" "EPSG:3067 EPSG:3857"
       "wms_enable_request" "*"
     END
   END
