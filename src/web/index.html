@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/proj4js/2.0.0/proj4.js"></script>
+    <script src="/proj4leaflet.js"></script>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css" rel="stylesheet">
+
+    <script>
+        L.CRS.EPSG3067 = new L.Proj.CRS.TMS(
+                'EPSG:3067',
+                '+proj=utm +zone=35 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs',
+                [-548576, 6291456, 1548576, 8388608],
+                {
+                    origin: [0, 0],
+                    resolutions: [
+                        8192, 4096, 2048, 1024, 512, 256,
+                        128, 64, 32, 16, 8, 4, 2, 1, 0.5,
+                        0.25, 0.125, 0.0625, 0.03125, 0.015625
+                    ]
+                }
+        );
+
+        function tm35ToWgs84(a, b) {
+            var from = "+proj=utm +zone=35 +ellps=GRS80 +towgs84=0,0,0,-0,-0,-0,0 +units=m +no_defs";
+            var to = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs";
+            var result = proj4(from, to, [a, b]);
+            return {lng: result[0], lat: result[1]};
+        }
+
+        function maxBounds() {
+            var bounds = L.CRS.EPSG3067.projectedBounds;
+            var southWest = tm35ToWgs84(bounds[0], bounds[1]);
+            var northEast = tm35ToWgs84(bounds[2], bounds[3]);
+            return L.latLngBounds(southWest, northEast);
+        }
+
+        L.TileLayer.MML = L.TileLayer.extend({
+            options: {
+                type: 'xyz',
+                format: 'image/png',
+                attribution: '&copy; <a href="http://www.maanmittauslaitos.fi/avoindata_lisenssi_versio1_20120501"' +
+                'target=new>Maanmittauslaitos</a>',
+                tms: true,
+                bounds: maxBounds()
+            },
+
+            initialize: function (url, options) {
+                L.setOptions(this, options);
+                L.TileLayer.prototype.initialize.call(this, url, options);
+            }
+        });
+
+        function createMap(crs, url, minZoom, maxZoom, maxNativeZoom) {
+            var map = new L.map('mapContainer', {
+                crs: crs,
+                minZoom: minZoom,
+                maxZoom: maxZoom,
+                continuousWorld: true,
+                worldCopyJump: false,
+                zoomAnimation: false
+            });
+
+            map.addControl(L.control.zoom({position: 'bottomleft'}));
+            map.addLayer(new L.TileLayer.MML(url, {
+                maxNativeZoom: maxNativeZoom
+            }));
+
+            return map;
+        }
+
+        function parseParams() {
+            var query = location.search.substr(1);
+            var result = {};
+            query.split("&").forEach(function (part) {
+                var item = part.split("=");
+                result[item[0]] = decodeURIComponent(item[1]);
+            });
+            return result;
+        }
+
+        function startWidget() {
+            var params = parseParams();
+            var layer = params.layer || 'maasto';
+            var crsCode = "3067";
+            var crs = L.CRS.EPSG3067;
+            var minZoom = 0;
+            var maxZoom = 13;
+            var maxNativeZoom = 11;
+            var url = "/tms/1.0.0/" + layer + "/EPSG_" + crsCode + "/{z}/{x}/{y}.png";
+
+            var map = createMap(crs, url, minZoom, maxZoom, maxNativeZoom);
+
+            if (params.lat && params.lng) {
+                map.setView([parseFloat(params.lat), parseFloat(params.lng)], params.zoom || minZoom);
+            } else {
+                map.setView([65.01275, 25.46815], params.zoom || minZoom);
+            }
+        }
+    </script>
+</head>
+
+<body onload="startWidget()" style="height: 100%;padding:0;margin:0;">
+<div id="mapContainer" style="height: 100%; width: 100%"></div>
+</body>
+</html>

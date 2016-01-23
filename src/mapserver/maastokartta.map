@@ -1,0 +1,140 @@
+MAP
+  NAME maastokartta
+  STATUS ON
+  SIZE 256 256
+  EXTENT -76000 6570000 884000 7818000
+  UNITS METERS
+  IMAGECOLOR 255 255 255
+  TEMPLATEPATTERN "maastokartta"
+  SHAPEPATH "/srv/mapserver/data"
+  CONFIG "MS_ERRORFILE" "/tmp/maastokartta.log"
+
+  OUTPUTFORMAT
+    NAME "png8"
+    DRIVER AGG/PNG8
+    MIMETYPE "image/png; mode=8bit"
+    IMAGEMODE RGB
+    EXTENSION "png"
+    FORMATOPTION "QUANTIZE_FORCE=on"
+    FORMATOPTION "QUANTIZE_DITHER=off"
+    FORMATOPTION "QUANTIZE_COLORS=256"
+  END
+
+  IMAGETYPE png8
+
+  WEB
+    METADATA
+      "wms_title" "MML Maastokartta"
+      "wms_accessconstraints" "none"
+      "wms_onlineresource" "http://192.168.99.100/index.html"
+      "wms_srs" "EPSG:3067"
+      "wms_enable_request" "*"
+    END
+  END
+
+  PROJECTION
+    "init=epsg:3067"
+  END
+
+  LAYER
+    NAME "maasto_50k"
+    GROUP "maasto"
+    STATUS OFF
+    TYPE RASTER
+    EXTENT 20000 6594000 740000 7794000
+    METADATA
+      "wms_title"           "MML Maastokartta 50k"
+      "wms_srs"             "EPSG:3067"
+      "wms_name"            "mml_50k"
+      "wms_server_version"  "1.1.1"
+      "wms_format"          "image/png"
+    END
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    PROCESSING "RESAMPLE=BILINEAR"
+    PROCESSING "OVERSAMPLE_RATIO=16.0"
+    DATA "maastokartta_50k.tiff"
+    UNITS METERS
+    SIZEUNITS PIXELS
+    MINSCALEDENOM 0
+    MAXSCALEDENOM 22677
+    PROJECTION
+      "init=epsg:3067"
+    END
+  END
+
+  LAYER
+    NAME "maasto_100k"
+    GROUP "maasto"
+    STATUS OFF
+    TYPE RASTER
+    EXTENT 20000 6570000 740000 7818000
+    METADATA
+      "wms_title"           "MML Maastokartta 100k"
+      "wms_srs"             "EPSG:3067"
+      "wms_name"            "mml_250k"
+      "wms_server_version"  "1.1.1"
+      "wms_format"          "image/png"
+    END
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    PROCESSING "RESAMPLE=BILINEAR"
+    PROCESSING "OVERSAMPLE_RATIO=16.0"
+    DATA "maastokartta_100k.tiff"
+    UNITS METERS
+    SIZEUNITS PIXELS
+    MINSCALEDENOM 22677
+    MAXSCALEDENOM 90708
+    PROJECTION
+      "init=epsg:3067"
+    END
+  END
+
+  LAYER
+    NAME "maasto_250k"
+    GROUP "maasto"
+    STATUS OFF
+    TYPE RASTER
+    EXTENT 20000 6570000 788000 7818000
+    METADATA
+      "wms_title"           "MML Maastokartta 250k"
+      "wms_srs"             "EPSG:3067"
+      "wms_name"            "mml_50k"
+      "wms_server_version"  "1.1.1"
+      "wms_format"          "image/png"
+    END
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    PROCESSING "RESAMPLE=BILINEAR"
+    PROCESSING "OVERSAMPLE_RATIO=16.0"
+    DATA "maastokartta_250k.tiff"
+    UNITS METERS
+    SIZEUNITS PIXELS
+    MINSCALEDENOM 90708
+    MAXSCALEDENOM 181417
+    PROJECTION
+      "init=epsg:3067"
+    END
+  END
+
+  LAYER
+    NAME "maasto_500k"
+    GROUP "maasto"
+    STATUS OFF
+    TYPE RASTER
+    EXTENT -76000 6570000 884000 7818000
+    METADATA
+      "wms_title"           "MML Maastokartta 500k"
+      "wms_srs"             "EPSG:3067"
+      "wms_name"            "mml_500k"
+      "wms_server_version"  "1.1.1"
+      "wms_format"          "image/png"
+    END
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    PROCESSING "OVERSAMPLE_RATIO=1.0"
+    DATA "maastokartta_500k.tiff"
+    UNITS METERS
+    SIZEUNITS PIXELS
+    MINSCALEDENOM 181417
+    PROJECTION
+      "init=epsg:3067"
+    END
+  END
+END

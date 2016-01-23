@@ -1,0 +1,56 @@
+services:
+  tms:
+    use_grid_names: true
+    origin: 'nw'
+
+layers:
+  - name: maasto
+    title: MML maastokartta
+    sources: [mml_maastokartta_cache]
+
+caches:
+  mml_maastokartta_cache:
+    grids: [EPSG_3067]
+    sources: [mml_maastokartta]
+    format: image/png
+    link_single_color_images: false
+    minimize_meta_requests: true
+    disable_storage: false
+    cache:
+      type: file
+
+sources:
+  debug_source:
+    type: debug
+
+  mml_maastokartta:
+    type: mapserver
+    max_res: 1
+    coverage:
+        bbox: [19.0, 59.3, 32.0, 70.1]
+        srs: 'EPSG:4326'
+    req:
+      layers: maastokartta
+      map: /srv/mapserver/maastokartta.map
+    mapserver:
+      binary: /usr/lib/cgi-bin/mapserv
+      working_dir: /srv/mapserver/
+
+grids:
+  EPSG_3067:
+    origin: nw
+    srs: EPSG:3067
+    bbox: [-548576.0, 6291456.0, 1548576.0, 8388608]
+    bbox_srs: 'EPSG:3067'
+    tile_size: [256, 256]
+    res: [8192, 4096, 2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5, 0.25, 0.125, 0.0625, 0.03125, 0.015625]
+    stretch_factor: 1.3
+
+globals:
+  cache:
+    base_dir: /srv/mapproxy/cache_data
+    meta_size: [1, 1]
+    meta_buffer: 0
+  image:
+    resampling_method: bilinear
+    jpeg_quality: 80

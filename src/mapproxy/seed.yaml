@@ -1,0 +1,12 @@
+seeds:
+  maasto:
+    caches: [mml_maastokartta_cache]
+    coverages: [finland]
+    grids: [EPSG_3067]
+    levels:
+      to: 10
+
+coverages:
+  finland:
+    bbox: [19.0, 59.3, 32.0, 70.1]
+    srs: 'EPSG:4326'
