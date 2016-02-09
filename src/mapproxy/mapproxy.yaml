@@ -28,8 +28,8 @@ sources:
     max_res: 1
     supported_srs: ['EPSG:3067', 'EPSG:3857']
     coverage:
-        bbox: [19.0, 59.3, 32.0, 70.1]
-        srs: 'EPSG:4326'
+        bbox: [-76000, 6570000, 884000, 7818000]
+        srs: 'EPSG:3067'
     req:
       layers: maastokartta
       map: /srv/mapserver/maastokartta.map

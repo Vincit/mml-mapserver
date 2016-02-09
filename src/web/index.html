@@ -50,24 +50,22 @@
             },
 
             initialize: function (url, options) {
-                L.setOptions(this, options);
                 L.TileLayer.prototype.initialize.call(this, url, options);
             }
         });
 
-        function createMap(crs, url, minZoom, maxZoom, maxNativeZoom) {
+        function createMap(crs, url, minZoom, maxZoom) {
             var map = new L.map('mapContainer', {
                 crs: crs,
-                minZoom: minZoom,
-                maxZoom: maxZoom,
                 continuousWorld: true,
                 worldCopyJump: false,
-                zoomAnimation: false
+                zoomAnimation: true
             });
 
             map.addControl(L.control.zoom({position: 'bottomleft'}));
             map.addLayer(new L.TileLayer.MML(url, {
-                maxNativeZoom: maxNativeZoom
+                minZoom: minZoom,
+                maxZoom: maxZoom
             }));
 
             return map;
@@ -88,17 +86,17 @@
             var layer = params.layer || 'maasto';
             var crsCode = params.crs || "3067";
             var crs = params.crs === "3857" ? L.CRS.EPSG3857 : L.CRS.EPSG3067;
-            var minZoom = params.crs === "3857" ? 5 : 0;
+            var defaultZoom = params.crs === "3857" ? 11 : 9;
+            var minZoom = params.crs === "3857" ? 5 : 2;
             var maxZoom = params.crs === "3857" ? 17 : 13;
-            var maxNativeZoom = params.crs === "3857" ? 15 : 11;
             var url = "/tms/1.0.0/" + layer + "/EPSG_" + crsCode + "/{z}/{x}/{y}.png";
 
-            var map = createMap(crs, url, minZoom, maxZoom, maxNativeZoom);
+            var map = createMap(crs, url, minZoom, maxZoom);
 
             if (params.lat && params.lng) {
-                map.setView([parseFloat(params.lat), parseFloat(params.lng)], params.zoom || minZoom);
+                map.setView([parseFloat(params.lat), parseFloat(params.lng)], params.zoom || defaultZoom);
             } else {
-                map.setView([65.01275, 25.46815], params.zoom || minZoom);
+                map.setView([65.01275, 25.46815], params.zoom || defaultZoom);
             }
         }
     </script>

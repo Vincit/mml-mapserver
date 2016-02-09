@@ -37,6 +37,30 @@ MAP
   END
 
   LAYER
+    NAME "peruskartta"
+    GROUP "maasto"
+    STATUS OFF
+    TYPE RASTER
+    EXTENT 56000 6594000 740000 7782000
+    METADATA
+      "wms_title"           "MML Peruskartta"
+      "wms_srs"             "EPSG:3067"
+      "wms_name"            "peruskartta"
+      "wms_server_version"  "1.1.1"
+      "wms_format"          "image/png"
+    END
+    PROCESSING "RESAMPLE=BILINEAR"
+    DATA "peruskartta.tiff"
+    UNITS METERS
+    SIZEUNITS PIXELS
+    MINSCALEDENOM 0
+    MAXSCALEDENOM 9000
+    PROJECTION
+      "init=epsg:3067"
+    END
+  END
+
+  LAYER
     NAME "maasto_50k"
     GROUP "maasto"
     STATUS OFF
@@ -49,14 +73,12 @@ MAP
       "wms_server_version"  "1.1.1"
       "wms_format"          "image/png"
     END
-    PROCESSING "CLOSE_CONNECTION=DEFER"
     PROCESSING "RESAMPLE=BILINEAR"
-    PROCESSING "OVERSAMPLE_RATIO=16.0"
     DATA "maastokartta_50k.tiff"
     UNITS METERS
     SIZEUNITS PIXELS
-    MINSCALEDENOM 0
-    MAXSCALEDENOM 22677
+    MINSCALEDENOM 9000
+    MAXSCALEDENOM 22000
     PROJECTION
       "init=epsg:3067"
     END
@@ -75,13 +97,12 @@ MAP
       "wms_server_version"  "1.1.1"
       "wms_format"          "image/png"
     END
-    PROCESSING "CLOSE_CONNECTION=DEFER"
     PROCESSING "RESAMPLE=BILINEAR"
     PROCESSING "OVERSAMPLE_RATIO=16.0"
     DATA "maastokartta_100k.tiff"
     UNITS METERS
     SIZEUNITS PIXELS
-    MINSCALEDENOM 22677
+    MINSCALEDENOM 22000
     MAXSCALEDENOM 90708
     PROJECTION
       "init=epsg:3067"
@@ -101,7 +122,6 @@ MAP
       "wms_server_version"  "1.1.1"
       "wms_format"          "image/png"
     END
-    PROCESSING "CLOSE_CONNECTION=DEFER"
     PROCESSING "RESAMPLE=BILINEAR"
     PROCESSING "OVERSAMPLE_RATIO=16.0"
     DATA "maastokartta_250k.tiff"
@@ -127,7 +147,6 @@ MAP
       "wms_server_version"  "1.1.1"
       "wms_format"          "image/png"
     END
-    PROCESSING "CLOSE_CONNECTION=DEFER"
     PROCESSING "OVERSAMPLE_RATIO=1.0"
     DATA "maastokartta_500k.tiff"
     UNITS METERS
