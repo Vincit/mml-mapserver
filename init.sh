@@ -18,17 +18,17 @@ shptree maastokartta_100k.shp
 shptree maastokartta_250k.shp
 shptree maastokartta_500k.shp
 
-gdalbuildvrt maastokartta_50k.vrt maastokartta_50k.shp
-gdalbuildvrt maastokartta_100k.vrt maastokartta_100k.shp
-gdalbuildvrt maastokartta_250k.vrt maastokartta_250k.shp
-gdalbuildvrt maastokartta_500k.vrt maastokartta_500k.shp
+gdalbuildvrt -srcnodata 255 -vrtnodata 255 maastokartta_50k.vrt maastokartta_50k.shp
+gdalbuildvrt -srcnodata 255 -vrtnodata 255 maastokartta_100k.vrt maastokartta_100k.shp
+gdalbuildvrt -srcnodata 255 -vrtnodata 255 maastokartta_250k.vrt maastokartta_250k.shp
+gdalbuildvrt -srcnodata 255 -vrtnodata 255 maastokartta_500k.vrt maastokartta_500k.shp
 
-#gdal_translate -of GTiff -a_srs EPSG:3067 -co BLOCKXSIZE=256 -co BLOCKYSIZE=256 -co COMPRESS=DEFLATE -co PREDICTOR=2 -co TILED=yes -co BIGTIFF=IF_NEEDED maastokartta_50k.vrt maastokartta_50k.tiff
-gdal_translate -of GTiff -a_srs EPSG:3067 -co BLOCKXSIZE=256 -co BLOCKYSIZE=256 -co COMPRESS=DEFLATE -co PREDICTOR=2 -co TILED=yes -co BIGTIFF=IF_NEEDED maastokartta_100k.vrt maastokartta_100k.tiff
-gdal_translate -of GTiff -a_srs EPSG:3067 -co BLOCKXSIZE=256 -co BLOCKYSIZE=256 -co COMPRESS=DEFLATE -co PREDICTOR=2 -co TILED=yes -co BIGTIFF=IF_NEEDED maastokartta_250k.vrt maastokartta_250k.tiff
-gdal_translate -of GTiff -a_srs EPSG:3067 -co BLOCKXSIZE=256 -co BLOCKYSIZE=256 -co COMPRESS=DEFLATE -co PREDICTOR=2 -co TILED=yes -co BIGTIFF=IF_NEEDED maastokartta_500k.vrt maastokartta_500k.tiff
+gdal_translate -of GTiff -a_srs EPSG:3067 -co BLOCKXSIZE=256 -co BLOCKYSIZE=256 -co COMPRESS=DEFLATE -co TILED=yes -co BIGTIFF=YES -a_nodata 255 maastokartta_50k.vrt maastokartta_50k.tiff
+gdal_translate -of GTiff -a_srs EPSG:3067 -co BLOCKXSIZE=256 -co BLOCKYSIZE=256 -co COMPRESS=DEFLATE -co TILED=yes -co BIGTIFF=IF_NEEDED -a_nodata 255 maastokartta_100k.vrt maastokartta_100k.tiff
+gdal_translate -of GTiff -a_srs EPSG:3067 -co BLOCKXSIZE=256 -co BLOCKYSIZE=256 -co COMPRESS=DEFLATE -co TILED=yes -co BIGTIFF=IF_NEEDED -a_nodata 255 maastokartta_250k.vrt maastokartta_250k.tiff
+gdal_translate -of GTiff -a_srs EPSG:3067 -co BLOCKXSIZE=256 -co BLOCKYSIZE=256 -co COMPRESS=DEFLATE -co TILED=yes -co BIGTIFF=IF_NEEDED -a_nodata 255 maastokartta_500k.vrt maastokartta_500k.tiff
 
-#gdaladdo maastokartta_50k.tiff -r gauss --config NUM_THREADS 4 --config COMPRESS_OVERVIEW DEFLATE --config PREDICTOR 2 --config INTERLEAVE_OVERVIEW PIXEL --config PHOTOMETRIC_OVERVIEW YCBCR 2 4 8 16 32 64 128 256 512 1024 2048 4096
-gdaladdo maastokartta_100k.tiff -r gauss --config NUM_THREADS 4 --config COMPRESS_OVERVIEW DEFLATE --config PREDICTOR 2 --config INTERLEAVE_OVERVIEW PIXEL --config PHOTOMETRIC_OVERVIEW YCBCR 2 4 8 16 32 64 128 256 512 1024 2048 4096
-gdaladdo maastokartta_250k.tiff -r gauss --config NUM_THREADS 4 --config COMPRESS_OVERVIEW DEFLATE --config PREDICTOR 2 --config INTERLEAVE_OVERVIEW PIXEL --config PHOTOMETRIC_OVERVIEW YCBCR 2 4 8 16 32 64 128 256 512 1024 2048 4096
-gdaladdo maastokartta_500k.tiff -r gauss --config NUM_THREADS 4 --config COMPRESS_OVERVIEW DEFLATE --config PREDICTOR 2 --config INTERLEAVE_OVERVIEW PIXEL --config PHOTOMETRIC_OVERVIEW YCBCR 2 4 8 16 32 64 128 256 512 1024 2048 4096
+#gdaladdo maastokartta_50k.tiff -r gauss --config NUM_THREADS 4 --config COMPRESS_OVERVIEW DEFLATE --config INTERLEAVE_OVERVIEW PIXEL --config PHOTOMETRIC_OVERVIEW YCBCR 2 4 8 16 32 64 128 256 512 1024 2048 4096
+gdaladdo maastokartta_100k.tiff -r gauss --config NUM_THREADS 4 --config COMPRESS_OVERVIEW DEFLATE --config INTERLEAVE_OVERVIEW PIXEL --config PHOTOMETRIC_OVERVIEW YCBCR 2 4 8 16 32 64 128 256 512 1024 2048 4096
+gdaladdo maastokartta_250k.tiff -r gauss --config NUM_THREADS 4 --config COMPRESS_OVERVIEW DEFLATE --config INTERLEAVE_OVERVIEW PIXEL --config PHOTOMETRIC_OVERVIEW YCBCR 2 4 8 16 32 64 128 256 512 1024 2048 4096
+gdaladdo maastokartta_500k.tiff -r gauss --config NUM_THREADS 4 --config COMPRESS_OVERVIEW DEFLATE --config INTERLEAVE_OVERVIEW PIXEL --config PHOTOMETRIC_OVERVIEW YCBCR 2 4 8 16 32 64 128 256 512 1024 2048 4096
